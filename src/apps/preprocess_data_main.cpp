@@ -1,7 +1,7 @@
 /*
  * @Author: Ke Zhang
  * @Date: 2022-08-22 09:22:42
- * @LastEditTime: 2022-09-06 13:55:54
+ * @LastEditTime: 2022-09-07 17:25:20
  * @Description: 数据预处理主程序
  */
 
@@ -43,7 +43,7 @@ int main(int argc, char **argv)
     rclcpp::executors::MultiThreadedExecutor executor(rclcpp::executor::ExecutorArgs(), 0, true);
     executor.add_node(preprocess_data_node);
 
-    std::thread preprocess(&PreprocessDataFlow::run, preprocess_data_flow);
+    std::thread preprocess_thread(&PreprocessDataFlow::run, preprocess_data_flow);
     executor.spin();
 
     rclcpp::shutdown();

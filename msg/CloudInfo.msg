@@ -10,6 +10,15 @@ float32 gnss_orientation_x
 float32 gnss_orientation_y
 float32 gnss_orientation_z
 
+# laser observe pose
+float32 laser_position_x
+float32 laser_position_y
+float32 laser_position_z
+float32 laser_orientation_w
+float32 laser_orientation_x
+float32 laser_orientation_y
+float32 laser_orientation_z
+
 # Point cloud messages
 sensor_msgs/PointCloud2 cloud_deskewed  # original cloud deskewed
 

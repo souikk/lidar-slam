@@ -1,7 +1,7 @@
 /*
  * @Author: Ke Zhang
  * @Date: 2022-08-22 10:31:08
- * @LastEditTime: 2022-09-06 20:15:02
+ * @LastEditTime: 2022-09-07 15:17:31
  * @Description: 数据预处理的工作流程
  */
 #include "preprocess_data/preprocess_data_flow.hpp"
@@ -34,17 +34,17 @@ namespace localization
      */
     void PreprocessDataFlow::initSubscriber(rclcpp::Node::SharedPtr node_ptr, const YAML::Node &config)
     {
-        subImu_ = std::make_shared<ImuSubscriber>(
+        imu_subscriber_ = std::make_shared<ImuSubscriber>(
             node_ptr,
             config["imu"]["topic_name"].as<std::string>(),
             config["imu"]["queue_size"].as<size_t>(),
             config["policy_history"].as<int>());
-        subCloud_ = std::make_shared<CloudSubscriber>(
+        cloud_subscriber_ = std::make_shared<CloudSubscriber>(
             node_ptr,
             config["lidar"]["topic_name"].as<std::string>(),
             config["lidar"]["queue_size"].as<size_t>(),
             config["policy_history"].as<int>());
-        subGnss_ = std::make_shared<GnssSubscriber>(
+        gnss_subscriber_ = std::make_shared<GnssSubscriber>(
             node_ptr,
             config["gnss"]["topic_name"].as<std::string>(),
             config["gnss"]["queue_size"].as<size_t>(),
@@ -126,9 +126,9 @@ namespace localization
     bool PreprocessDataFlow::read()
     {
 
-        subCloud_->accessData(unsync_cloud_buff_);
-        subImu_->accessData(unsync_imu_buff_);
-        subGnss_->accessData(unsync_gnss_buff_);
+        cloud_subscriber_->accessData(unsync_cloud_buff_);
+        imu_subscriber_->accessData(unsync_imu_buff_);
+        gnss_subscriber_->accessData(unsync_gnss_buff_);
 
         if (unsync_cloud_buff_.empty() || unsync_imu_buff_.size() < 2 || unsync_gnss_buff_.size() < 2)
         {

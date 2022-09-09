@@ -1,10 +1,11 @@
 /*
  * @Author: Ke Zhang
  * @Date: 2022-08-17 15:42:07
- * @LastEditTime: 2022-08-25 09:33:32
+ * @LastEditTime: 2022-09-07 17:25:49
  * @Description:前端节点主程序
  */
 #include <chrono>
+#include <thread>
 
 #include "glog/logging.h"
 
@@ -21,18 +22,29 @@ int main(int argc, char **argv)
     FLAGS_log_dir = WORKSPACE_PATH + "/log";
     FLAGS_alsologtostderr = 1;
 
+    std::string config_file_path = WORKSPACE_PATH + "/config/front_end/config.yaml";
+    YAML::Node config = YAML::LoadFile(config_file_path);
+    int policy_history = config["subscriber"]["policy_history"].as<int>();
+
     rclcpp::init(argc, argv);
     rclcpp::NodeOptions options;
-    options.use_intra_process_comms(true);
-    rclcpp::Node::SharedPtr front_end_node = std::make_shared<localization::FrontEndNode>(options);
-    std::shared_ptr<localization::FrontEndFlow> front_end_flow = std::make_shared<localization::FrontEndFlow>(front_end_node);
-    rclcpp::executors::MultiThreadedExecutor executor(rclcpp::executor::ExecutorArgs(), 0, true);
-    rclcpp::Rate rate(1e8);
-    while (rclcpp::ok())
+    if (policy_history == 1)
     {
-        executor.spin_node_once(front_end_node, 0ms);
-
-        rate.sleep();
+        options.use_intra_process_comms(true);
     }
+    else
+    {
+        options.use_intra_process_comms(false);
+    }
+    rclcpp::Node::SharedPtr front_end_node = std::make_shared<FrontEndNode>(options);
+    std::shared_ptr<FrontEndFlow> front_end_flow = std::make_shared<FrontEndFlow>(front_end_node);
+    rclcpp::executors::MultiThreadedExecutor executor(rclcpp::executor::ExecutorArgs(), 0, true);
+
+    executor.add_node(front_end_node);
+
+    std::thread front_end_thread(&FrontEndFlow::run, front_end_flow);
+    executor.spin();
+    rclcpp::shutdown();
+
     return 0;
 }

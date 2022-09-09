@@ -1,7 +1,7 @@
 '''
 Author: Ke Zhang
 Date: 2022-08-26 17:56:27
-LastEditTime: 2022-09-05 15:54:11
+LastEditTime: 2022-09-07 17:18:53
 Description: 
 '''
 import os
@@ -25,13 +25,19 @@ def generate_launch_description():
             '/preprocess_data.launch.py']),
     )
 
+    frontEnd = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([os.path.join(
+            get_package_share_directory('localization'), 'launch'),
+            '/front_end.launch.py']),
+    )
+
     rviz2 = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(
             get_package_share_directory('localization'), 'launch'),
             '/rviz2.launch.py']),
     )
-
     return  LaunchDescription([
         preprocessData,
+        # frontEnd,
         rviz2,
     ])

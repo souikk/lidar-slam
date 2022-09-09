@@ -1,7 +1,7 @@
 /*
  * @Author: Ke Zhang
  * @Date: 2022-08-22 09:58:44
- * @LastEditTime: 2022-09-06 20:21:49
+ * @LastEditTime: 2022-09-07 15:17:52
  * @Description:数据预处理工作流程类的头文件
  */
 #pragma once
@@ -45,9 +45,9 @@ namespace localization
         void publishData();
 
         rclcpp::Node::SharedPtr node_ptr_;
-        std::shared_ptr<ImuSubscriber> subImu_;
-        std::shared_ptr<CloudSubscriber> subCloud_;
-        std::shared_ptr<GnssSubscriber> subGnss_;
+        std::shared_ptr<ImuSubscriber> imu_subscriber_;
+        std::shared_ptr<CloudSubscriber> cloud_subscriber_;
+        std::shared_ptr<GnssSubscriber> gnss_subscriber_;
 
         std::shared_ptr<CloudPublisher> cloud_publisher_;
         std::shared_ptr<GnssPublisher> gnss_publisher_;

@@ -1,0 +1,21 @@
+subscriber:
+    policy_history: 1            #policy_history=1为Keep last，2为Keep all
+    cloudInfo:
+        topic_name: /preprocess/cloud_info
+        frame_id: laser_link
+        queue_size: 3000
+
+publisher:
+    policy_history: 1            #policy_history=1为Keep last，2为Keep all
+    lidar:
+        topic_name: /front_end/laser_odometry
+        frame_id: laser_link
+        queue_size: 10
+    cloudInfo:
+        topic_name: /front_end/cloud_info
+        frame_id: laser_link
+        queue_size: 10
+
+frontEnd:
+    
+        

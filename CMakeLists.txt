@@ -48,6 +48,7 @@ target_link_libraries(preprocess_data ${ALL_TARGET_LIBRARIES} ${OpenMP_CXX_FLAGS
 add_executable(front_end src/apps/front_end_main.cpp ${ALL_SRCS})
 ament_target_dependencies(front_end rclcpp sensor_msgs nav_msgs)
 rosidl_target_interfaces(front_end ${PROJECT_NAME} "rosidl_typesupport_cpp")
+target_compile_options(preprocess_data PRIVATE ${OpenMP_CXX_FLAGS})
 target_link_libraries(front_end ${ALL_TARGET_LIBRARIES})
 
 install(TARGETS
